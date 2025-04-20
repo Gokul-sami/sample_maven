@@ -28,7 +28,7 @@ public class LoginController {
     @PostMapping("/login")
     public String login(@RequestParam String username, @RequestParam String password) {
         if (serv.log(username, password)) {
-            return "home";
+            return "redirect:/home";
         }
         return "login";
     }
