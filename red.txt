@@ -11,18 +11,5 @@ sudo apt-get install jenkins -y
 cat /var/lib/jenkins/secrets/initialAdminPassword
 
 
-
-<script>
-  function validateForm() {
-  var username = document.getElementById("username").value;
-  var password = document.getElementById("password").value;
-  var usernameRegex = /^[A-Za-z]{1,20}$/;
-  var passwordRegex = /^[A-Za-z0-9]{1,15}$/;
-  if (!usernameRegex.test(username) || !passwordRegex.test(password)) {
-  alert("Wrong user name or password");
-  return false;
-  }
-  alert("Login Successful!");
-  return true;
-  }
-</script>
+var usernameRegex = /^[A-Za-z]{1,20}$/;
+var passwordRegex = /^[A-Za-z0-9]{1,15}$/;
