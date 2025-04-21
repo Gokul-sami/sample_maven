@@ -93,3 +93,9 @@ task createJar(type: Jar)
 from sourceSets.main.output
 archiveFileName = "my-project.jar”
 }
+
+
+
+./gradlew clean build
+./gradlew bootRun
+mvn spring-boot:run
