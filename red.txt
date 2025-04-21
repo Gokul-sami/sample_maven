@@ -85,3 +85,11 @@ public class InventoryApp {
         sc.close();
     }
 }
+
+
+
+task createJar(type: Jar)
+{
+from sourceSets.main.output
+archiveFileName = "my-project.jar”
+}
