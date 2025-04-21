@@ -17,3 +17,71 @@ echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkin
 
 https://github.com/lavenderlark/DEV
 https://github.com/lavenderlark/dev_grad
+
+
+
+public class InventoryManager {
+    private String[] items = new String[100];
+    private int[] quantities = new int[100];
+    private int count = 0;
+
+    public void addItem(String item, int quantity) {
+        items[count] = item;
+        quantities[count] = quantity;
+        count++;
+        System.out.println("Item added.");
+    }
+
+    public void viewInventory() {
+        System.out.println("\n--- Inventory List ---");
+        for (int i = 0; i < count; i++) {
+            System.out.println((i + 1) + ". " + items[i] + " - " + quantities[i] + " units");
+        }
+    }
+}
+
+
+
+
+import java.util.Scanner;
+
+public class InventoryApp {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        InventoryManager manager = new InventoryManager();
+        int choice;
+
+        do {
+            System.out.println("\n--- Simple Inventory Menu ---");
+            System.out.println("1. Add Item");
+            System.out.println("2. View Inventory");
+            System.out.println("3. Exit");
+            System.out.print("Enter choice: ");
+            choice = sc.nextInt();
+            sc.nextLine(); // consume newline
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter item name: ");
+                    String item = sc.nextLine();
+                    System.out.print("Enter quantity: ");
+                    int quantity = sc.nextInt();
+                    manager.addItem(item, quantity);
+                    break;
+
+                case 2:
+                    manager.viewInventory();
+                    break;
+
+                case 3:
+                    System.out.println("Exiting...");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        } while (choice != 3);
+
+        sc.close();
+    }
+}
